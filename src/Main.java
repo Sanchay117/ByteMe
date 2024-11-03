@@ -160,6 +160,10 @@ public class Main {
 
                 if(choice == 1) usr.browseMenu(menu);
                 else if(choice == 2) usr.cart(menu);
+                else if(choice == 3) usr.orders();
+                else if(choice == 4) usr.review(menu);
+                else if(choice == 5) break;
+                else System.out.println("Please enter a valid choice");
 
             }
 

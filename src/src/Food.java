@@ -1,11 +1,14 @@
 package src;
 
+import java.util.ArrayList;
+
 public class Food {
     private String name;
     private int price;
     private int ID;
     private String category;
     private boolean available;
+    private final ArrayList<Review> reviews = new ArrayList<>();
 
     public Food(String name, int price, int ID, String category, boolean available) {
         this.name = name;
@@ -13,6 +16,14 @@ public class Food {
         this.ID = ID;
         this.category = category;
         this.available = available;
+    }
+
+    public void addReview(Review review) {
+        reviews.add(review);
+    }
+
+    public ArrayList<Review> getReviews() {
+        return reviews;
     }
 
     @Override

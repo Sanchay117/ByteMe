@@ -8,7 +8,7 @@ public class Customer {
     private final String password;
 
     private final Map<Food, Integer> cart = new HashMap<>();
-
+    private final ArrayList<Order> orders = new ArrayList<>();
 
     public Customer(String email, String name, String password) {
         this.email = email;
@@ -33,8 +33,11 @@ public class Customer {
     }
 
     public void displayGUI(){
-        System.out.println("Press\n1.To Browse Menu\n");
-        System.out.println("2.To View/Modify Cart\n");
+        System.out.println("Press\n1.To Browse Menu");
+        System.out.println("2.To View/Modify Cart");
+        System.out.println("3.To Track Orders");
+        System.out.println("4.To Review");
+        System.out.println("5.To Exit");
     }
 
     public void browseMenu(ArrayList<Food> Menu){
@@ -132,7 +135,7 @@ public class Customer {
         while (true){
             printDashes();
 
-            System.out.println("Press\n1.To Add Items\n2.To Modify Quantities");
+            System.out.println("Press\n1.To Add Items\n2.To Modify Quantities\n3.To Remove Items\n4.View Total\n5.To Checkout\n6.To Go Back");
             int choice2 = scanner.nextInt();
             scanner.nextLine();
 
@@ -172,9 +175,240 @@ public class Customer {
             else if(choice2==2){
                 printDashes();
 
+                System.out.println("Your Cart:\n");
+                for(Map.Entry<Food, Integer> entry : cart.entrySet()){
+                    System.out.println(entry.getKey().getID()+"."+ entry.getKey() + " " + entry.getValue() + "[QTY.]");
+                }
 
+                System.out.println("Enter ID:");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                Food fd = null;
+
+                for(Map.Entry<Food, Integer> entry : cart.entrySet()){
+                    if(entry.getKey().getID() == id){
+                        fd = entry.getKey();
+                    }
+                }
+
+                if(fd==null){
+                    System.out.println("No such ID");
+                    continue;
+                }
+
+                System.out.println("Enter Quantity:");
+                int quantity = scanner.nextInt();
+                scanner.nextLine();
+                if(quantity<=0){
+                    System.out.println("Invalid Quantity");
+                    continue;
+                }
+
+                cart.put(fd,quantity);
+                System.out.println("Modified Item!");
+            }
+            else if(choice2==3){
+                printDashes();
+
+                System.out.println("Your Cart:\n");
+                for(Map.Entry<Food, Integer> entry : cart.entrySet()){
+                    System.out.println(entry.getKey().getID()+"."+ entry.getKey()  + " " + entry.getValue() + "[QTY.]");
+                }
+
+                System.out.println("Enter ID:");
+                int id = scanner.nextInt();
+                scanner.nextLine();
+                Food fd = null;
+
+                for(Map.Entry<Food, Integer> entry : cart.entrySet()){
+                    if(entry.getKey().getID() == id){
+                        fd = entry.getKey();
+                    }
+                }
+
+                if(fd==null){
+                    System.out.println("No such ID");
+                    continue;
+                }
+
+                cart.remove(fd);
+
+                System.out.println("Removed Item!");
+
+            }
+            else if(choice2==4){
+                printDashes();
+
+                int total = 0;
+
+                for(Map.Entry<Food, Integer> entry : cart.entrySet()){
+                    total += entry.getValue()*entry.getKey().getPrice();
+                }
+
+                System.out.println("Total Price:"+total);
+            }
+            else if (choice2==5) {
+
+                System.out.println("Enter Payment Method:");
+                String paymentMethod = scanner.nextLine();
+                System.out.println("Enter Address:");
+                String address = scanner.nextLine();
+
+                Map<Food,Integer> cartCopy = new HashMap<>(cart);
+                Order order = new Order(cartCopy,address,paymentMethod,"Order Received");
+                orders.add(order);
+
+                cart.clear();
+            }
+            else if (choice2 == 6) {
+                break;
+            }
+            else{
+                System.out.println("Invalid Choice");
             }
         }
     }
 
+    public void orders(){
+        printDashes();
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true){
+            printDashes();
+
+            System.out.println("Enter\n1.To View Order Status \n2.To Cancel Order\n3.To View Order History\n4.To Go Back");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if(choice==3 || choice == 1){
+                printDashes();
+                System.out.println("Your Orders:");
+                int i = 1;
+                for(Order o:orders){
+                    System.out.println(i+"."+o);
+                }
+            }else if(choice == 2){
+                printDashes();
+                System.out.println("Your Orders:");
+                int i = 1;
+                for(Order o:orders){
+                    System.out.println(i+"."+o);
+                    i++;
+                }
+
+                System.out.println("Enter Number of order you want to cancel:");
+                int num = scanner.nextInt();
+                scanner.nextLine();
+
+                if(num<1 || num>orders.size()){
+                    System.out.println("Invalid choice");
+                    continue;
+                }
+
+                if(orders.get(num-1).getStatus().equals("Order Received")){
+                    orders.remove(num-1);
+                    System.out.println("Cancelled Order!");
+                }else{
+                    System.out.println("Too Late!");
+                }
+            }else if(choice==4){
+                break;
+            }else{
+                printDashes();
+                System.out.println("Invalid Choice");
+            }
+        }
+    }
+
+    public void review(ArrayList<Food> menu){
+        printDashes();
+
+        Scanner scanner = new Scanner(System.in);
+
+        while (true){
+            printDashes();
+
+            System.out.println("Press\n1.To Leave Review For An Item You ordered\n2.To View Reviews\n3.To Go Back");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+
+            if(choice==1){
+                HashSet<String> uniqueValues = new HashSet<>();
+                for(Order o:orders){
+                    for(Map.Entry<Food, Integer> entry : o.getCart().entrySet()){
+                        uniqueValues.add(entry.getKey().getName());
+                    }
+                }
+
+                ArrayList<String> foods = new ArrayList<>(uniqueValues);
+
+                System.out.println("Items You've ordered:");
+                int i = 1;
+                for(String str:foods){
+                    System.out.println(i+"."+str);
+                }
+
+                System.out.println("Enter Number of item you want to review:");
+                int num = scanner.nextInt();
+                scanner.nextLine();
+                if(num<1 || num>foods.size()){
+                    System.out.println("Invalid choice");
+                    continue;
+                }
+
+                System.out.println("Enter Review [1-5]:");
+                int stars = scanner.nextInt();
+                scanner.nextLine();
+
+                if(stars<1 || stars>5){
+                    System.out.println("Invalid choice");
+                    continue;
+                }
+
+                System.out.println("Enter Review Body:");
+                String body = scanner.nextLine();
+
+                Review review = new Review(body,stars,name);
+
+                for(Food f:menu){
+                    if(Objects.equals(f.getName(), foods.get(num - 1))){
+                        f.addReview(review);
+                    }
+                }
+
+                System.out.println("Review Added!");
+            }
+            else if(choice == 2){
+                printDashes();
+
+                System.out.println("Enter food name:");
+                String foodName = scanner.nextLine();
+
+                Food food = null;
+                for(Food f:menu){
+                    if(Objects.equals(f.getName(), foodName)){
+                        food = f;
+                        break;
+                    }
+                }
+
+                if(food==null){
+                    System.out.println("Invalid Name");
+                    continue;
+                }
+
+                System.out.println("Reviews:");
+                for(Review r:food.getReviews()){
+                    System.out.println("Rating:"+r.getRating());
+                    System.out.println(r.getBody());
+                    System.out.println("-"+r.getAuthor());
+                }
+            } else if (choice == 3) {
+                break;
+            }else{
+                System.out.println("Invalid Choice");
+            }
+        }
+    }
 }

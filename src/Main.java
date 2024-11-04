@@ -14,15 +14,16 @@ public class Main {
     private static final ArrayList<Customer> customers = new ArrayList<>();
     private static final ArrayList<Admin> admins = new ArrayList<>();
     private static final ArrayList<Food> menu = new ArrayList<>();
+    private static final ArrayList<Order> orders = new ArrayList<>();
 
     private static void prepopulate(){
         Admin a1 = new Admin(adminEmail, adminPassword);
         Admin a2 = new Admin("root@gmail.com", adminPassword);
         Admin a3 = new Admin("home@gmail.com", adminPassword);
 
-        Customer c1 = new Customer("sanchay23478@iiitd.ac.in","Sanchay Singh","123");
-        Customer c2 = new Customer("test@gmail.com","Foo","123");
-        Customer c3 = new Customer("test2@gmail.com","Bar","123");
+        Customer c1 = new Customer("sanchay23478@iiitd.ac.in","Sanchay Singh","123",1);
+        Customer c2 = new Customer("test@gmail.com","Foo","123",0);
+        Customer c3 = new Customer("test2@gmail.com","Bar","123",0);
 
         customers.add(c1);
         customers.add(c2);
@@ -127,7 +128,7 @@ public class Main {
                 System.out.println("Please enter your Name:");
                 String name = scanner.nextLine();
 
-                Customer csr = new Customer(email, password, name);
+                Customer csr = new Customer(email, password, name,0);
                 usr = csr;
 
                 customers.add(csr);
@@ -159,13 +160,25 @@ public class Main {
                 scanner.nextLine();
 
                 if(choice == 1) usr.browseMenu(menu);
-                else if(choice == 2) usr.cart(menu);
-                else if(choice == 3) usr.orders();
+                else if(choice == 2) {
+                    Order o = usr.cart(menu);
+                    if(o!=null) orders.add(o);
+                }
+                else if(choice == 3) {
+                    Order o = usr.orders();
+                    if(o!=null) orders.add(o);
+                }
                 else if(choice == 4) usr.review(menu);
                 else if(choice == 5) break;
+                else if(choice == 6 && usr.getType()==0){
+                    usr.VIP();
+                }
                 else System.out.println("Please enter a valid choice");
 
             }
+
+        }
+        else{
 
         }
 

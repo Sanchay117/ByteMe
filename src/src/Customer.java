@@ -10,10 +10,13 @@ public class Customer {
     private final Map<Food, Integer> cart = new HashMap<>();
     private final ArrayList<Order> orders = new ArrayList<>();
 
-    public Customer(String email, String name, String password) {
+    private int type; // 1 for vip 0 for regular
+
+    public Customer(String email, String name, String password,int type) {
         this.email = email;
         this.name = name;
         this.password = password;
+        this.type = type;
     }
 
     private static void printDashes(){
@@ -24,6 +27,10 @@ public class Customer {
         return email;
     }
 
+    public int getType() {
+        return type;
+    }
+
     public String getName() {
         return name;
     }
@@ -32,12 +39,21 @@ public class Customer {
         return password;
     }
 
+    public void VIP(){
+        printDashes();
+        System.out.println("Thanks! You are Now A VIP!");
+        type=1;
+    }
+
     public void displayGUI(){
         System.out.println("Press\n1.To Browse Menu");
         System.out.println("2.To View/Modify Cart");
         System.out.println("3.To Track Orders");
         System.out.println("4.To Review");
         System.out.println("5.To Exit");
+        if(type==0){
+            System.out.println("6.Pay To Become VIP");
+        }
     }
 
     public void browseMenu(ArrayList<Food> Menu){
@@ -129,7 +145,7 @@ public class Customer {
         }
     }
 
-    public void cart(ArrayList<Food> menu){
+    public Order cart(ArrayList<Food> menu){
         Scanner scanner = new Scanner(System.in);
 
         while (true){
@@ -259,6 +275,8 @@ public class Customer {
                 orders.add(order);
 
                 cart.clear();
+
+                return order;
             }
             else if (choice2 == 6) {
                 break;
@@ -267,9 +285,11 @@ public class Customer {
                 System.out.println("Invalid Choice");
             }
         }
+
+        return null;
     }
 
-    public void orders(){
+    public Order orders(){
         printDashes();
 
         Scanner scanner = new Scanner(System.in);
@@ -277,7 +297,7 @@ public class Customer {
         while (true){
             printDashes();
 
-            System.out.println("Enter\n1.To View Order Status \n2.To Cancel Order\n3.To View Order History\n4.To Go Back");
+            System.out.println("Enter\n1.To View Order Status \n2.To Cancel Order\n3.To Re-Order\n4.To Go Back");
             int choice = scanner.nextInt();
             scanner.nextLine();
 
@@ -288,7 +308,26 @@ public class Customer {
                 for(Order o:orders){
                     System.out.println(i+"."+o);
                 }
-            }else if(choice == 2){
+
+                if(choice==3){
+                    System.out.println("Enter number of order you want to reorder:");
+
+                    int num = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if(num<1 || num>orders.size()){
+                        System.out.println("Invalid Number");
+                        continue;
+                    }
+
+                    Order o = orders.get(num-1);
+                    o.setStatus("Order Received");
+                    orders.add(o);
+                    System.out.println("Re-Ordered!");
+                    return o;
+                }
+            }
+            else if(choice == 2){
                 printDashes();
                 System.out.println("Your Orders:");
                 int i = 1;
@@ -319,6 +358,8 @@ public class Customer {
                 System.out.println("Invalid Choice");
             }
         }
+
+        return null;
     }
 
     public void review(ArrayList<Food> menu){

@@ -1,4 +1,3 @@
-package src;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -241,7 +240,7 @@ public class Admin {
 
                 ArrayList<Order> specialOrders = new ArrayList<>();
                 for(Order order : orders){
-                    if(order.isReq()){
+                    if(order.isReq() && (order.getStatus().equals("Order Received") || order.getStatus().equals("pending"))){
                         specialOrders.add(order);
                     }
                 }

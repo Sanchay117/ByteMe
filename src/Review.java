@@ -1,4 +1,3 @@
-package src;
 
 public class Review {
     private String body;

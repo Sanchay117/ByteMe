@@ -197,6 +197,7 @@ public class Admin {
                 int i = 1;
                 for(Order order : orders){
                     System.out.println(i+"."+order);
+                    i++;
                 }
 
                 System.out.println("Enter ID of the order that needs to be updated: ");

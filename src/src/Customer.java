@@ -308,7 +308,7 @@ public class Customer {
         return null;
     }
 
-    public Order orders(){
+    public Order orders(ArrayList<Order> orders_real){
         printDashes();
 
         Scanner scanner = new Scanner(System.in);
@@ -365,7 +365,10 @@ public class Customer {
                 }
 
                 if(orders.get(num-1).getStatus().equals("Order Received")){
+                    Order o = orders.get(num-1);
+                    orders_real.remove(o);
                     orders.remove(num-1);
+
                     System.out.println("Cancelled Order!");
                 }else{
                     System.out.println("Too Late!");
@@ -407,6 +410,7 @@ public class Customer {
                 int i = 1;
                 for(String str:foods){
                     System.out.println(i+"."+str);
+                    i++;
                 }
 
                 System.out.println("Enter Number of item you want to review:");

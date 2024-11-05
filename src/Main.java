@@ -34,7 +34,7 @@ public class Main {
         admins.add(a3);
 
         Food f1 = new Food("Pepsi",20,1,"drinks",true);
-        Food f2 = new Food("Coke",20,2,"drinks",false);
+        Food f2 = new Food("Coke",20,2,"drinks",true);
         Food f3 = new Food("Kurkure Paneer Momos",80,3,"snacks",true);
 
         menu.add(f1);
@@ -47,15 +47,9 @@ public class Main {
         System.out.println("-------------------------------------------------------");
     }
 
-    public static void main(String[] args) {
-        prepopulate();
-
-        printDashes();
-        System.out.println("---------------Welcome To Byte Me!---------------------");
-
+    private static void logIN(){
         Scanner scanner = new Scanner(System.in);
-
-        while (true){
+        while(true){
             printDashes();
             System.out.println("Please enter your choice:\n1.To Login\n2.To Sign Up\n3.To Exit");
 
@@ -128,12 +122,12 @@ public class Main {
                 System.out.println("Please enter your Name:");
                 String name = scanner.nextLine();
 
-                Customer csr = new Customer(email, password, name,0);
-                usr = csr;
+                Customer csr = new Customer(email, name, password,0);
 
                 customers.add(csr);
+                usr = csr;
 
-                System.out.println("User Successfully logged in.");
+                System.out.println("User Successfully Logged in.");
                 break;
 
             }else if(choice == 3){
@@ -144,64 +138,81 @@ public class Main {
             }else{
                 System.out.println("Please enter a valid choice");
             }
+        }
 
-            if(usr!=null){
+        usr();
+    }
 
+    public static void usr(){
+        Scanner scanner = new Scanner(System.in);
+        if(usr!=null){
+
+            printDashes();
+            System.out.println("Logged In As: "+usr.getName());
+
+            while (true){
                 printDashes();
-                System.out.println("Logged In As: "+usr.getName());
 
-                while (true){
-                    printDashes();
+                usr.displayGUI();
 
-                    usr.displayGUI();
+                int choice123 = scanner.nextInt();
+                scanner.nextLine();
 
-                    int choice123 = scanner.nextInt();
-                    scanner.nextLine();
-
-                    if(choice123 == 1) usr.browseMenu(menu);
-                    else if(choice123 == 2) {
-                        Order o = usr.cart(menu);
-                        if(o!=null) orders.add(o);
-                    }
-                    else if(choice123 == 3) {
-                        Order o = usr.orders();
-                        if(o!=null) orders.add(o);
-                    }
-                    else if(choice123 == 4) usr.review(menu);
-                    else if(choice123 == 5) break;
-                    else if(choice123 == 6 && usr.getType()==0){
-                        usr.VIP();
-                    }
-                    else System.out.println("Please enter a valid choice");
-
+                if(choice123 == 1) usr.browseMenu(menu);
+                else if(choice123 == 2) {
+                    Order o = usr.cart(menu);
+                    if(o!=null) orders.add(o);
                 }
+                else if(choice123 == 3) {
+                    Order o = usr.orders(orders);
+                    if(o!=null) orders.add(o);
+                }
+                else if(choice123 == 4) usr.review(menu);
+                else if(choice123 == 5) {
+                    usr=null;
+                    logIN();
+                }
+                else if(choice123 == 6 && usr.getType()==0){
+                    usr.VIP();
+                }
+                else System.out.println("Please enter a valid choice");
 
             }
-            else{
+
+        }
+        else if(admin!=null){
+            printDashes();
+            System.out.println("Logged In As Admin");
+
+            while (true){
+
                 printDashes();
-                System.out.println("Logged In As Admin");
 
-                while (true){
+                admin.displayGUI();
+                int choice34 = scanner.nextInt();
+                scanner.nextLine();
 
-                    printDashes();
-
-                    admin.displayGUI();
-                    int choice34 = scanner.nextInt();
-                    scanner.nextLine();
-
-                    if(choice34==1) admin.manageMenu(menu,orders);
-                    else if(choice34 == 2) admin.manageOrders(orders);
-                    else if(choice34 == 3) admin.report(orders);
-                    else if(choice34 == 4) break;
-                    else System.out.println("Please enter a valid choice");
-
-
+                if(choice34==1) admin.manageMenu(menu,orders);
+                else if(choice34 == 2) admin.manageOrders(orders);
+                else if(choice34 == 3) admin.report(orders);
+                else if(choice34 == 4) {
+                    admin=null;
+                    logIN();
                 }
+                else System.out.println("Please enter a valid choice");
+
+
+            }
         }
+    }
 
+    public static void main(String[] args) {
+        prepopulate();
 
+        printDashes();
+        System.out.println("---------------Welcome To Byte Me!---------------------");
 
-        }
+        logIN();
 
     }
 }

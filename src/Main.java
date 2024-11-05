@@ -179,6 +179,21 @@ public class Main {
 
         }
         else{
+            printDashes();
+            System.out.println("Logged In As Admin");
+
+            while (true){
+
+                printDashes();
+
+                admin.displayGUI();
+                int choice = scanner.nextInt();
+                scanner.nextLine();
+
+                if(choice==1) admin.manageMenu(menu,orders);
+                else if(choice == 2) admin.manageOrders(orders);
+
+            }
 
         }
 

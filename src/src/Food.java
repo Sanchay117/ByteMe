@@ -22,6 +22,23 @@ public class Food {
         reviews.add(review);
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setPrice(int price) {
+        this.price = price;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setAvailable(int available) {
+        if(available == 1) this.available = true;
+        else this.available = false;
+    }
+
     public ArrayList<Review> getReviews() {
         return reviews;
     }

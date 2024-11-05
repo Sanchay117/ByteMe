@@ -144,56 +144,62 @@ public class Main {
             }else{
                 System.out.println("Please enter a valid choice");
             }
-        }
 
-        if(usr!=null){
-
-            printDashes();
-            System.out.println("Logged In As: "+usr.getName());
-
-            while (true){
-                printDashes();
-
-                usr.displayGUI();
-
-                int choice = scanner.nextInt();
-                scanner.nextLine();
-
-                if(choice == 1) usr.browseMenu(menu);
-                else if(choice == 2) {
-                    Order o = usr.cart(menu);
-                    if(o!=null) orders.add(o);
-                }
-                else if(choice == 3) {
-                    Order o = usr.orders();
-                    if(o!=null) orders.add(o);
-                }
-                else if(choice == 4) usr.review(menu);
-                else if(choice == 5) break;
-                else if(choice == 6 && usr.getType()==0){
-                    usr.VIP();
-                }
-                else System.out.println("Please enter a valid choice");
-
-            }
-
-        }
-        else{
-            printDashes();
-            System.out.println("Logged In As Admin");
-
-            while (true){
+            if(usr!=null){
 
                 printDashes();
+                System.out.println("Logged In As: "+usr.getName());
 
-                admin.displayGUI();
-                int choice = scanner.nextInt();
-                scanner.nextLine();
+                while (true){
+                    printDashes();
 
-                if(choice==1) admin.manageMenu(menu,orders);
-                else if(choice == 2) admin.manageOrders(orders);
+                    usr.displayGUI();
+
+                    int choice123 = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if(choice123 == 1) usr.browseMenu(menu);
+                    else if(choice123 == 2) {
+                        Order o = usr.cart(menu);
+                        if(o!=null) orders.add(o);
+                    }
+                    else if(choice123 == 3) {
+                        Order o = usr.orders();
+                        if(o!=null) orders.add(o);
+                    }
+                    else if(choice123 == 4) usr.review(menu);
+                    else if(choice123 == 5) break;
+                    else if(choice123 == 6 && usr.getType()==0){
+                        usr.VIP();
+                    }
+                    else System.out.println("Please enter a valid choice");
+
+                }
 
             }
+            else{
+                printDashes();
+                System.out.println("Logged In As Admin");
+
+                while (true){
+
+                    printDashes();
+
+                    admin.displayGUI();
+                    int choice34 = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if(choice34==1) admin.manageMenu(menu,orders);
+                    else if(choice34 == 2) admin.manageOrders(orders);
+                    else if(choice34 == 3) admin.report(orders);
+                    else if(choice34 == 4) break;
+                    else System.out.println("Please enter a valid choice");
+
+
+                }
+        }
+
+
 
         }
 

@@ -271,7 +271,26 @@ public class Customer {
                 String address = scanner.nextLine();
 
                 Map<Food,Integer> cartCopy = new HashMap<>(cart);
-                Order order = new Order(cartCopy,address,paymentMethod,"Order Received");
+                Order order = new Order(cartCopy,address,paymentMethod,"Order Received",name);
+
+                while (true){
+                    System.out.println("Enter\n1.If You Have Any Special Requests\n2.If You don't");
+                    int choice1 = scanner.nextInt();
+                    scanner.nextLine();
+
+                    if(choice1==1){
+                        System.out.println("Enter Request:");
+                        String request = scanner.nextLine();
+
+                        order.setSpecialReq(request);
+                        break;
+                    }else if(choice1==2){
+                        break;
+                    }else{
+                        System.out.println("Please enter a valid choice");
+                    }
+                }
+
                 orders.add(order);
 
                 cart.clear();
